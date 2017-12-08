@@ -1,7 +1,8 @@
-var Mongoose = require("mongoose");
+var Mongoose = require("mongoose"),
+Schema = Mongoose.Schema;
 
-var PictureSchema = new Mongoose.Schema({
-    "GalleryId": { "type": ObjectID, "required": true },
+var PictureSchema = new Schema({
+    "GalleryId": { "type": Mongoose.SchemaTypes.ObjectId, "required": true },
     "Title": { "type": String, "required": true, "default": "Title"},
     "Description": { "type": String, "default": "Description" },
     "PictureDate": { "type": Date, "default": new Date() },

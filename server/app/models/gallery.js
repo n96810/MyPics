@@ -1,8 +1,8 @@
 var Mongoose = require("mongoose"),
-Schema = mongoose.Schema;
+Schema = Mongoose.Schema;
 
 var GallerySchema = new Schema({
-    "UserId": { "type": ObjectID, "required": true },
+    "UserId": { "type": Mongoose.SchemaTypes.ObjectId, "required": true },
     "Name": { "type": String, "required": true },
     "Description": { "type": String, "default": "Gallery Title" }
 });
