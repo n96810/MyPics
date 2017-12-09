@@ -11,15 +11,16 @@ module.exports = function(app, config) {
     app.use("/api", router);
 
     router.get("/:userId/galleries", function(req, res, next) {
-        logger.log("Get all galleries for user " + req.params.userId);
+        logger.log("Get all galleries for user " + req.params.userId, "verbose");
 
         var galleries = Gallery.find({ "userId": req.params.userId })
         .exec()
         .then(result => {
+            console.log(result);
             if (result && result.length) {
                 res.status(200).json(result);
             } else {
-                res.status(404).json({ "msg": "No galleries" });
+                res.status(404).json({ "message": "No galleries" });
             }
         })
         .catch(err => {
@@ -29,7 +30,7 @@ module.exports = function(app, config) {
 
     router.post("/:userId/galleries", function(req, res, next) {
         logger.log("Add a gallery with id for user " + req.params.userId);
-        
+        console.log(req.body);
         new Gallery(req.body)
         .save()
         .then(result => {

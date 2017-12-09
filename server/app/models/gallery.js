@@ -2,9 +2,9 @@ var Mongoose = require("mongoose"),
 Schema = Mongoose.Schema;
 
 var GallerySchema = new Schema({
-    "UserId": { "type": Mongoose.SchemaTypes.ObjectId, "required": true },
-    "Name": { "type": String, "required": true },
-    "Description": { "type": String, "default": "Gallery Title" }
+    "userId": { "type": Mongoose.SchemaTypes.ObjectId, "required": true },
+    "name": { "type": String, "required": true },
+    "description": { "type": String, "default": "Gallery description" }
 });
 
 module.exports = Mongoose.model("Gallery", GallerySchema);

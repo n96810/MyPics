@@ -34,11 +34,8 @@ var logger = new (winston.Logger)({
 });
 
 log = function(message, level) {
-    console.log("Logging now");
-    console.log("message:" + message);
     level = level || 'info';
     logger.log(level, message);
-    console.log("Done logging");
 };
 
 exports.log = log;

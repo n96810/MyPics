@@ -12,7 +12,18 @@ module.exports = function(app, config) {
 
     router.get("/:userId/galleries/:galleryId/pictures", function(req, res, next) {
         logger.log("Get all pictures (thumbnails) for a user's gallery");
-        
+        var pictures = Picture.find({ "userId": req.params.userId, "galleryId": req.params.galleryId })
+        .exec()
+        .then(result => {
+            if (result && result.length) {
+                res.status(200).json(result);
+            } else {
+                res.status(404).json({"message": "No images found"});
+            }
+        })
+        .catch(err => {
+            return next(err);
+        });
     });
 
     router.get("/:userId/galleries/:galleryId/pictures/:pictureId", function(req, res, next) {
@@ -38,7 +49,7 @@ module.exports = function(app, config) {
         .save()
         .then(result => {
             if (result) {
-                res.status(201).json()
+                res.status(201).json(result);
             }
         })
         .catch(err => {

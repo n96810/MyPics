@@ -14,11 +14,20 @@ module.exports = function(app, config) {
     mongoose.set("debug", true);
     mongoose.connection.once("open", function callback(){ logger.log("Mongoose connected to the database"); });
 
+    logger.log("Starting Mongoose...");
+    mongoose.Promise = require("bluebird");
+    mongoose.connect(config.db, { "useMongoClient": true });
+    var db = mongoose.connection;
+    db.on("error", function() { throw new Error("Unable to connect to the database at " + config.db); });
+    
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ "extended": true }));
+
     var models = glob.sync(config.root + "/app/models/*.js");
     models.forEach(function(model){ require(model); });
     
     var controllers = glob.sync(config.root + "/app/controllers/*.js");
-    controllers.forEach(function(controller){ require(controller); });
+    controllers.forEach(function(controller){ require(controller)(app, config); });
 
     if (process.env.NODE_ENV !== "test") {
         app.use(function(req, res, next) {
@@ -27,10 +36,7 @@ module.exports = function(app, config) {
         });
     }
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ "extended": true }));
-
-    require("../app/controllers/users")(app, config);
+    //require("../app/controllers/users")(app, config);
 
     app.use(express.static(config.root + "/public"));
 
