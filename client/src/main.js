@@ -1,4 +1,9 @@
 import environment from './environment';
+import config from "./auth-config";
+import regeneratorRuntime from "./regenerator-runtime";
+window.regeneratorRuntime = regeneratorRuntime;
+
+Promise.config({ "warnings": { "wForgottenReturn": false }});
 
 export function configure(aurelia) {
   aurelia.use

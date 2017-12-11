@@ -1,0 +1,8 @@
+<template>
+    <label for="email">Email:</label>
+    <input  value.bind="email" type="email" id="email" placeholder="user@domain.com" autofocus>
+    <label for="password">Password:</label>
+    <input  value.bind="password" type="password" id="password">
+    <button accesskey="Enter" click.trigger="login()">Login</button>
+    <button click.trigger="register()">Register</button>
+</template>

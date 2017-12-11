@@ -1,0 +1,21 @@
+<template>
+    <table>
+        <thead>
+            <tr>
+                <th>Gallery Name</th>
+                <th>Date Created</th>
+            </tr>
+        </thead>
+        <body>
+            <tr repeat.for="gallery of galleries">
+                <td>{gallery.name}</td>
+                <td>{gallery.title}</td>
+            </tr>
+        </body>
+    </table>
+    <h2>Add Gallery</h2>
+    <label for="addGallery_Name">Name:</label>
+    <input id="addGallery_Name" type="text" bind.value="addGallery_Name">
+    <label for="addGallery_Description">Description:</label>
+    <input id="addGallery_Description" type="text" bind.value="addGallery_Description">
+</template>

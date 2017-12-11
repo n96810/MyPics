@@ -10,7 +10,7 @@ Gallery = mongoose.model("Gallery");
 module.exports = function(app, config) {
     app.use("/api", router);
 
-    router.get("/:userId/galleries", function(req, res, next) {
+    router.get("/:userId/galleries", function(req, res, next) { //OK
         logger.log("Get all galleries for user " + req.params.userId, "verbose");
 
         var galleries = Gallery.find({ "userId": req.params.userId })
@@ -28,9 +28,9 @@ module.exports = function(app, config) {
         });
     });
 
-    router.post("/:userId/galleries", function(req, res, next) {
+    router.post("/galleries", function(req, res, next) { //OK
         logger.log("Add a gallery with id for user " + req.params.userId);
-        console.log(req.body);
+        
         new Gallery(req.body)
         .save()
         .then(result => {
@@ -41,7 +41,7 @@ module.exports = function(app, config) {
         });
     });
 
-    router.put("/:userId/galleries/:galleryId", function(req, res, next) {
+    router.put("/galleries/:galleryId", function(req, res, next) { //OK
         logger.log("Update a gallery with id " + req.params.galleryId + " for user " + req.params.userId);
 
         Gallery.findOneAndUpdate({ "_id": req.params.galleryId }, req.body, { "new": true, "multi": false })
@@ -53,7 +53,7 @@ module.exports = function(app, config) {
         });
     });
     
-    router.delete("/:userId/galleries/:galleryId", function(req, res, next) {
+    router.delete("/galleries/:galleryId", function(req, res, next) { //OK
         logger.log("Delete a gallery with id " + req.params.galleryId + " for user " + req.params.userId);
 
         Gallery.findOneAndRemove( { "_id": req.params.galleryId } )

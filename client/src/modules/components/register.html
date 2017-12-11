@@ -1,0 +1,11 @@
+<template>
+    <label for="firstName">First Name:</label>
+    <input  value.bind="firstName" type="text" id="firstName" autofocus>
+    <label for="lastName">Last Name:</label>
+    <input  value.bind="lastName" type="text" id="lastName" autofocus>
+    <label for="email">Email:</label>
+    <input  value.bind="email" type="email" id="email" placeholder="user@domain.com">
+    <label for="password">Password:</label>
+    <input  value.bind="password" type="password" id="password">
+    <button click.trigger="register()">Register this User</button>
+</template>

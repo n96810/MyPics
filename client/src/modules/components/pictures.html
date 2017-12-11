@@ -1,0 +1,47 @@
+<template>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date Created</th>
+            </tr>
+        </thead>
+        <body>
+            <tr repeat.for="picture of currentGallery.pictures">
+                <td>{picture.name}</td>
+                <td>{picture.date}</td>
+                <!-- <td>
+                    <img src="{picture.fileName}">
+                </td> -->
+            </tr>
+        </body>
+    </table>
+    <h2>Add Gallery</h2>
+    <table>
+        <body>
+            <tr>
+                <td><label for="addPicture_Name">Name:</label></td>
+                <td><input id="addPicture_Name" type="text" bind.value="addPicture.Name"></td>
+            </tr>
+            <tr>
+                <td><label for="addPicture_Description">Description:</label></td>
+                <td><input id="addPicture_Description" type="text" bind.value="addPicture.Description"></td>
+            </tr>
+            <tr>
+                <td><label for="addPicture_Date">Date:</label></td>
+                <td><input id="addPicture_Date" type="Date" bind.value="addPicture.Date"></td>
+            </tr>
+            <tr>
+                <td><label for="addPicture_Date">Image File:</label></td>
+                <td><button>Image File ${addPictureImageFileName}</button></td>
+            </tr>
+        </body>
+    </table>
+    
+    
+    
+    
+    
+    
+    
+</template>

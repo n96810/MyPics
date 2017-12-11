@@ -8,7 +8,7 @@ var UserSchema = new Schema({
     "status": { "type": Boolean, "default": true },
     "email": { "type": String, "unique": true, "password": true },
     "password": { "type": String, "required": true },
-    "dateRegistered": { "type": String, "required": true }
+    "dateRegistered": { "type": String, "required": true, "default": new Date() }
 });
 
 module.exports = Mongoose.model('User', UserSchema);
