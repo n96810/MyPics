@@ -1,11 +1,11 @@
 <template>
     <label for="firstName">First Name:</label>
-    <input  value.bind="firstName" type="text" id="firstName" autofocus>
+    <input  value.bind="user.firstName" type="text" id="firstName" autofocus>
     <label for="lastName">Last Name:</label>
-    <input  value.bind="lastName" type="text" id="lastName" autofocus>
+    <input  value.bind="user.lastName" type="text" id="lastName" autofocus>
     <label for="email">Email:</label>
-    <input  value.bind="email" type="email" id="email" placeholder="user@domain.com">
+    <input  value.bind="user.email" type="email" id="email" placeholder="user@domain.com">
     <label for="password">Password:</label>
-    <input  value.bind="password" type="password" id="password">
-    <button click.trigger="register()">Register this User</button>
+    <input  value.bind="user.password" type="password" id="password">
+    <button click.trigger="saveUser()">Register this User</button>
 </template>

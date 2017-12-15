@@ -6,37 +6,41 @@ export class Galleries {
     constructor(data) {
         this.data = data;
         this.GALLERY_SERVICE = "galleries"
-        this.galleries = [];
+        this.galleryList = [];
     }
 
     async getUserGalleries(id) {
         let response = await this.data.get(id + "/" + this.GALLERY_SERVICE);
         if (!response.error && !response.message) {
-            this.galleries = response;
+            this.galleryList = response;
         }
     }
 
-    async saveGallery(gallery) {
-        if (!gallery._id) {
-            let response = await this.data.post(gallery, this.GALLERY_SERVICE)
-            if (!response.error) {
-                this.galleries.push(response);
+    async save(gallery) {
+        if (gallery)
+        {
+            if (!gallery._id) {
+                let response = await this.data.post(gallery, this.GALLERY_SERVICE);
+                if (!response.error) {
+                    console.log("adding to array");
+                    this.galleryList.push(response);
+                }
+                return response;
+            } else {
+                let response = await this.data.put(gallery, this.GALLERY_SERVICE + "/" + gallery._id);
+                if (!response.error) {
+                }
+                return response;
             }
-            return response;
-        } else {
-            let response = await this.data.put(gallery, this.GALLERY_SERVICE + "/" + gallery._id);
-            if (!response.error) {
-            }
-            return response;
         }
     }
     
-    async deleteGallery(id) {
+    async delete(id) {
         let response = await this.data.delete(this.GALLERY_SERVICE + "/" + gallery._id);
         if (!response.error) {
             for (let i = 0; i < this.galleries.length; i++) {
-                if (this.galleries[i]._id == id) {
-                    this.galleries.splice(i, 1);
+                if (this.galleryList[i]._id == id) {
+                    this.galleryList.splice(i, 1);
                 }
             }
         }

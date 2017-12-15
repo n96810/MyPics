@@ -5,7 +5,7 @@ import {HttpClient, json} from "aurelia-fetch-client"
 export class DataServices {
     constructor(http) {
         this.httpClient = http;
-        this.BASE_URL = "http://localhost:9000/api/";
+        this.BASE_URL = "http://localhost:5000/api/";
 
         this.httpClient.configure(config => {
             config
@@ -41,22 +41,22 @@ export class DataServices {
 
     post(content, url) {
         return this.httpClient.fetch(url, { "method": "post", "body": json(content) })
-        .then(response => response.json())
+        .then(response => { console.log(response); response.json() })
         .then(object => { return object })
-        .catch(error => { return object });
+        .catch(error => { return error })
     }
 
     put(content, url) {
         return this.httpClient.fetch(url, { "method": "put", "body": json(content) })
         .then(response => response.json())
         .then(object => { return object })
-        .catch(error => { return object });
+        .catch(error => { return error });
     }
 
     delete(content, url) {
         return this.httpClient.fetch(url, { "method": "delete" })
         .then(response => response.json())
         .then(object => { return object })
-        .catch(error => { return object });
+        .catch(error => { return error });
     }
 }

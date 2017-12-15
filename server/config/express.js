@@ -7,7 +7,7 @@ logger = require("./logger"),
 cors = require("cors");
 
 module.exports = function(app, config) {
-    //app.use(cors({ "origin": "http://localhost:9000" }));
+    app.use(cors({ "origin": "http://localhost:9000" }));
 
     app.use(require("morgan")("dev"));
 

@@ -2,10 +2,15 @@
 
 var express = require('express'),
 router = express.Router(),
+passportService = require("../../config/passport"),
+passport = require("passport"),
 logger = require('../../config/logger');
 
 var mongoose = require('mongoose'),
 User = mongoose.model('User');
+
+var requireLogin = passport.authenticate("local", { "session": false });
+var requireAuth = passport.authenticate("jwt", { "session": false });
 
 module.exports = function(app, config) {
     app.use('/api', router);
@@ -58,4 +63,6 @@ module.exports = function(app, config) {
         .then(user => { res.status(200).json({ "msg":"User deleted" }); })
         .catch(err => { return next(err); });
     });
+
+    router.route("/users/login").post(requireLogin, login);
 }

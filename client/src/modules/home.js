@@ -10,11 +10,13 @@ export class Home {
         this.auth = auth;
         this.loginError = "";
         this.users = users;
-        this.message = "home";
+        this.message = "Home";
         this.showLogin = true;
     }
 
     login() {
+        console.log(this.email);
+        console.log(this.password);
         return this.auth.login(this.email, this.password)
         .then(response => {
             sessionStorage.setItem("user", JSON.stringify(response.user));
@@ -41,7 +43,7 @@ export class Home {
 
     async saveUser() {
         let serverResponse = await this.users.save(this.user);
-        if (!severResponse.error) {
+        if (!serverResponse.error) {
             this.showLogin = true;
         } else {
             this.registerError = "There was a problem registering this user";

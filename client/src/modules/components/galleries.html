@@ -1,21 +1,20 @@
 <template>
-    <table>
+    <table class="table">
         <thead>
             <tr>
-                <th>Gallery Name</th>
-                <th>Date Created</th>
+                <th>Test</th>
             </tr>
         </thead>
         <body>
-            <tr repeat.for="gallery of galleries">
-                <td>{gallery.name}</td>
-                <td>{gallery.title}</td>
+            <tr class="table-secondary" repeat.for="gallery of this.galleries.galleryList">
+                <td>test</td>
             </tr>
         </body>
     </table>
     <h2>Add Gallery</h2>
     <label for="addGallery_Name">Name:</label>
-    <input id="addGallery_Name" type="text" bind.value="addGallery_Name">
+    <input id="addGallery_Name" type="text" value.bind="addGallery.name">
     <label for="addGallery_Description">Description:</label>
-    <input id="addGallery_Description" type="text" bind.value="addGallery_Description">
+    <input id="addGallery_Description" type="text" value.bind="addGallery.description">
+    <button id="addNewGallery" class="btn" click.trigger="saveGallery()">Save Gallery</button>
 </template>

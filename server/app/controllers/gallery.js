@@ -29,10 +29,11 @@ module.exports = function(app, config) {
     });
 
     router.post("/galleries", function(req, res, next) { //OK
+        logger.log(req.body);
         logger.log("Add a gallery with id for user " + req.params.userId);
         
-        new Gallery(req.body)
-        .save()
+        var gallery = new Gallery(req.body);
+        gallery.save()
         .then(result => {
             res.status(201).json(result);
         })
