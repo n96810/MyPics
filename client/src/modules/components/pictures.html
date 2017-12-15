@@ -1,40 +1,47 @@
 <template>
-    <!-- <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Date Created</th>
-            </tr>
-        </thead>
-        <body>
-            <tr repeat.for="picture of currentGallery.pictures">
-                <td>{picture.name}</td>
-                <td>{picture.date}</td>
-                <!-- <td>
-                    <img src="{picture.fileName}">
-                </td> -/->
-            </tr>
-        </body>
-    </table>
-    <h2>Add Gallery</h2>
-    <table>
-        <body>
-            <tr>
-                <td><label for="addPicture_Name">Name:</label></td>
-                <td><input id="addPicture_Name" type="text" bind.value="addPicture.Name"></td>
-            </tr>
-            <tr>
-                <td><label for="addPicture_Description">Description:</label></td>
-                <td><input id="addPicture_Description" type="text" bind.value="addPicture.Description"></td>
-            </tr>
-            <tr>
-                <td><label for="addPicture_Date">Date:</label></td>
-                <td><input id="addPicture_Date" type="Date" bind.value="addPicture.Date"></td>
-            </tr>
-            <tr>
-                <td><label for="addPicture_Date">Image File:</label></td>
-                <td><button>Image File ${addPictureImageFileName}</button></td>
-            </tr>
-        </body>
-    </table> -->
+    <div class="card">
+            <div show.bind="galleryObject.pictures.length">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <body>
+                        <tr repeat.for="picture of galleryObject.pictures">
+                            <td>${picture.name}</td>
+                            <td>${picture.description}</td>
+                            <td>
+                                <button click.trigger="openPicture(picture)">Open</button>
+                                <button click.trigger="deletePicture(picture)">Delete</button>
+                            </td>
+                        </tr>
+                    </body>
+                </table>
+            </div>
+        <div show.bind="!galleryObject.pictures.length">
+            <h2>No Pictures</h2>
+        </div>
+        <div class="form-group">
+            <h2>Add Picture</h2>
+            <div class="form-group">
+                    <label for="addPicture_Name">Name:</label>
+                    <input id="addPicture_Name" type="text" value.bind="addPicture.name">
+            </div>
+            <div class="form-group">
+                    <label for="addPicture_Description">Description:</label>
+                    <input id="addPicture_Description" type="text" value.bind="addPicture.description">
+            </div>
+            <div class="form-group">
+                    <label for="addPicture_ImgFile">Add Image file:</label>
+                    <input id="addPicture_ImgFile" type="file" change.delegate="uploadPicture()" files.bind="files">
+            </div>
+            <div class="form-group">
+                    <button id="addNewPicture" click.trigger="savePicture()">Add picture to ${galleryObject.name}</button>
+            </div>
+        </div>
+    </div>
+        <button click.trigger="exitGallery()">Back to List</button>
 </template>

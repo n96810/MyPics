@@ -1,5 +1,5 @@
 <template>
     <h1>${message}</h1>
-    <compose view="./components/galleries.html" show.bind="showGalleryList"></compose>
-    <compose view="./components/pictures.html" show.bind="!showGalleryList"></compose>
+    <compose show.bind="showGalleryList" view="./components/galleries.html"></compose>
+    <compose show.bind="!showGalleryList" view="./components/pictures.html"></compose>
 </template>

@@ -20,7 +20,7 @@ export class DataServices {
                 .withInterceptor({
                     request(request) {
                         console.log(`Requesting ${request.method} ${request.url}`);
-                        var authHeader = "Bearer " + localStorage.getItem("aurelia-token");
+                        var authHeader = "Bearer " + localStorage.getItem("aurelia_token");
                         request.headers.append("Authorization", authHeader);
                         return request;
                     },
@@ -34,29 +34,56 @@ export class DataServices {
 
     get(url) {
         return this.httpClient.fetch(url)
-        .then(response => response.json())
-        .then(data => { return data; })
-        .catch(error => { return error; });
+            .then(response => response.json())
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                return error;
+            });
     }
 
     post(content, url) {
-        return this.httpClient.fetch(url, { "method": "post", "body": json(content) })
-        .then(response => { console.log(response); response.json() })
-        .then(object => { return object })
-        .catch(error => { return error })
+        return this.httpClient
+            .fetch(url, {
+                "method": "post",
+                "body": json(content)
+            })
+            .then(response => response.json())
+            .then(object => {
+                return object;
+            })
+            .catch(error => {
+                return error;
+            });
     }
 
     put(content, url) {
-        return this.httpClient.fetch(url, { "method": "put", "body": json(content) })
-        .then(response => response.json())
-        .then(object => { return object })
-        .catch(error => { return error });
+        return this.httpClient
+            .fetch(url, {
+                "method": "put",
+                "body": json(content)
+            })
+            .then(response => response.json())
+            .then(object => {
+                return object;
+            })
+            .catch(error => {
+                return error;
+            });
     }
 
-    delete(content, url) {
-        return this.httpClient.fetch(url, { "method": "delete" })
-        .then(response => response.json())
-        .then(object => { return object })
-        .catch(error => { return error });
+    delete(url) {
+        return this.httpClient
+            .fetch(url, {
+                "method": "delete"
+            })
+            .then(response => response.json())
+            .then(object => {
+                return object;
+            })
+            .catch(error => {
+                return error;
+            });
     }
 }

@@ -5,7 +5,7 @@ import {DataServices} from "./data-services";
 export class Galleries {
     constructor(data) {
         this.data = data;
-        this.GALLERY_SERVICE = "galleries"
+        this.GALLERY_SERVICE = "galleries";
         this.galleryList = [];
     }
 
@@ -24,6 +24,8 @@ export class Galleries {
                 if (!response.error) {
                     console.log("adding to array");
                     this.galleryList.push(response);
+                    console.log(this.galleryList);
+                    console.log(response);
                 }
                 return response;
             } else {
@@ -36,9 +38,9 @@ export class Galleries {
     }
     
     async delete(id) {
-        let response = await this.data.delete(this.GALLERY_SERVICE + "/" + gallery._id);
+        let response = await this.data.delete(this.GALLERY_SERVICE + "/" + id);
         if (!response.error) {
-            for (let i = 0; i < this.galleries.length; i++) {
+            for (let i = 0; i < this.galleryList.length; i++) {
                 if (this.galleryList[i]._id == id) {
                     this.galleryList.splice(i, 1);
                 }

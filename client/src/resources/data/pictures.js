@@ -2,16 +2,18 @@ import {inject} from "aurelia-framework";
 import {DataServices} from "./data-services";
 import {Galleries} from "./galleries";
 
-@inject(DataServices)
+@inject(DataServices, Galleries)
 export class Pictures {
-    constructor(data) {
+    constructor(data, galleries) {
         this.data = data;
+        this.galleries = galleries;
         this.PICTURE_SERVICE = "pictures"
         this.pictures = [];
     }
 
     async getGalleryPictures(id) {
-        let response = await this.data.get(Galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
+        console.log("route: " + this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
+        let response = await this.data.get(this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
         if (!response.error && !response.message) {
             this.pictures = response;
         }
@@ -24,7 +26,7 @@ export class Pictures {
         }
     }
 
-    async savePicture(picture) {
+    async save(picture) {
         if (!picture._id) {
             let response = await this.data.post(picture, this.PICTURE_SERVICE)
             if (!response.error) {

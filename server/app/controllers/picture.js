@@ -26,7 +26,7 @@ module.exports = function(app, config) {
         });
     });
 
-    router.post("/galleries/:galleryId/pictures", function(req, res, next) {//OK
+    router.post("/pictures", function(req, res, next) {//OK
         logger.log("Add a picture to a user's gallery");
 
         new Picture(req.body)

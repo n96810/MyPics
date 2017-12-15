@@ -13,24 +13,17 @@ module.exports = function(app, config) {
     router.get("/:userId/galleries", function(req, res, next) { //OK
         logger.log("Get all galleries for user " + req.params.userId, "verbose");
 
-        var galleries = Gallery.find({ "userId": req.params.userId })
-        .exec()
+        Gallery.find({ "userId": req.params.userId })
         .then(result => {
-            console.log(result);
-            if (result && result.length) {
+            if (result) {
                 res.status(200).json(result);
             } else {
                 res.status(404).json({ "message": "No galleries" });
             }
-        })
-        .catch(err => {
-            return next(err);
         });
     });
 
     router.post("/galleries", function(req, res, next) { //OK
-        logger.log(req.body);
-        logger.log("Add a gallery with id for user " + req.params.userId);
         
         var gallery = new Gallery(req.body);
         gallery.save()
