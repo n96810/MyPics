@@ -12,21 +12,22 @@ export class Pictures {
     }
 
     async getGalleryPictures(id) {
-        console.log("route: " + this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
         let response = await this.data.get(this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
         if (!response.error && !response.message) {
             this.pictureList = response;
         }
     }
     
-    async getPicture(id) {
-        let response = await this.data.get(Galleries.GALLERY_SERVICE + "/" + data.galleryId + "/" + this.PICTURE_SERVICE + "/" + id);
+    async getPicture(galleryId, pictureId) {
+        let response = await this.data.get(this.galleries.GALLERY_SERVICE + "/" + galleryId + "/" + this.PICTURE_SERVICE + "/" + pictureId);
         if (!response.error && !response.message) {
-            this.currentPicture = response;
+            return response;
         }
     }
 
     async save(picture) {
+        console.log(picture);
+        console.log(picture._id);
         if (!picture._id) {
             let response = await this.data.post(picture, this.PICTURE_SERVICE)
             if (!response.error) {
@@ -34,7 +35,7 @@ export class Pictures {
             }
             return response;
         } else {
-            let response = await this.data.put(picture, this.PICTURE_SERVICE + "/" + picture);
+            let response = await this.data.put(picture, this.galleries.GALLERY_SERVICE + "/" + picture.galleryId + "/" + this.PICTURE_SERVICE + "/" + picture._id);
             if (!response.error) {
             }
             return response;

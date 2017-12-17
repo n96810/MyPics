@@ -1,20 +1,7 @@
 <template>
-    <div class="card">
-        <div show.bind="pictureObject">
-            <div class="form-group">
-                <img src="uploads/${pictureObject.galleryId}/${pictureObject._id}/${pictureObject.imageFile.filename}" aria-placeholder="No Image Selected">
-            </div>
-            <div class="form-group">
-                <label for="pictureObject_Name">Name:</label>
-                <h2 id="pictureObject_Name">${pictureObject.name}</h2>
-                <label for="pictureObject_Desc">Description:</label>
-                <h2 id="pictureObject_Desc">${pictureObject.description}</h2>
-                <label for="pictureObject_Date">Picture Date:</label>
-                <h2 id="pictureObject_Date">${pictureObject.pictureDate.ToString("d")}</h2>
-            </div>
-        </div>
+    <div show.bind="!pictureObject._id">
             <div show.bind="pictures.pictureList.length">
-                <table class="table">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Thumbnail</th>
@@ -26,14 +13,14 @@
                     <body>
                         <tr repeat.for="picture of pictures.pictureList">
                             <td>
-                                <img src="uploads/${picture.galleryId}/${picture._id}/${picture.imageFile.filename}"
+                                <img class="img-thumbnail" src="http://localhost:5000/uploads/${picture.galleryId}/${picture._id}/${picture.imageFile.filename}"
                                 height="40px" width="40px">
                             </td>
                             <td>${picture.name}</td>
                             <td>${picture.description}</td>
                             <td>
-                                <button click.trigger="openPicture(picture)">Open</button>
-                                <button click.trigger="deletePicture(picture)">Delete</button>
+                                <button class="btn" click.trigger="openPicture(picture)">Open</button>
+                                <button class="btn" click.trigger="deletePicture(picture)">Delete</button>
                             </td>
                         </tr>
                     </body>
@@ -45,25 +32,25 @@
         <div class="form-group">
             <h2>Add Picture</h2>
             <div class="form-group">
-                    <label for="addPicture_Name">Name:</label>
-                    <input id="addPicture_Name" type="text" value.bind="addPicture.name">
+                <label for="addPicture_Name">Name</label>
+                <input class="form-control" id="addPicture_Name" type="text" value.bind="pictureObject.name">
             </div>
             <div class="form-group">
-                    <label for="addPicture_Description">Description:</label>
-                    <input id="addPicture_Description" type="text" value.bind="addPicture.description">
+                <label for="addPicture_Description">Description</label>
+                <input class="form-control" id="addPicture_Description" type="text" value.bind="pictureObject.description">
             </div>
             <div class="form-group">
-                    <label for="addPicture_Date">Description:</label>
-                    <input id="addPicture_Date" type="date" value.bind="addPicture.pictureDate">
+                <label for="addPicture_Date">Picture Date</label>
+                <input class="form-control" id="addPicture_Date" type="date" value.bind="pictureObject.pictureDate">
             </div>
             <div class="form-group">
-                    <label for="addPicture_ImgFile">Add Image file:</label>
-                    <input id="addPicture_ImgFile" type="file" change.delegate="uploadPicture()" files.bind="files">
+                <label for="addPicture_ImgFile">Add Image File</label>
+                <input id="addPicture_ImgFile" type="file" change.delegate="uploadPicture()" files.bind="files">
             </div>
             <div class="form-group">
-                    <button id="addNewPicture" click.trigger="savePicture()">Add picture to ${galleryObject.name}</button>
+                <button class="btn btn-success" id="addNewPicture" click.trigger="savePicture()">Add picture</button>
             </div>
         </div>
+        <button class="btn btn-warning" click.trigger="exitGallery()">Back to List</button>
     </div>
-        <button click.trigger="exitGallery()">Back to List</button>
 </template>

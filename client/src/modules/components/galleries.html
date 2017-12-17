@@ -1,37 +1,43 @@
 <template>
-    <div class="card">
-            <div show.bind="galleries.galleryList.length">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Options</th>
-                        </tr>
-                    </thead>
-                    <body>
-                        <tr repeat.for="gallery of galleries.galleryList">
-                            <td>${gallery.name}</td>
-                            <td>${gallery.name}</td>
-                            <td>
-                                <button class="btn-info" click.trigger="openGallery(gallery)">Open</button>
-                                <button class="btn-danger" click.trigger="deleteGallery(gallery)">Delete</button>
-                            </td>
-                        </tr>
-                    </body>
-                </table>
-            </div>
-        <div show.bind="!galleries.galleryList.length">
+    <div show.bind="!galleryObject._id">
+        <div class="form-group" show.bind="galleries.galleryList.length">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <body>
+                    <tr repeat.for="gallery of galleries.galleryList">
+                        <td>${gallery.name}</td>
+                        <td>${gallery.name}</td>
+                        <td>
+                            <button class="btn btn-info" click.trigger="openGallery(gallery)">Open</button>
+                            <button class="btn btn-danger" click.trigger="deleteGallery(gallery)">Delete</button>
+                        </td>
+                    </tr>
+                </body>
+            </table>
+        </div>
+        <div class="form-group" show.bind="!galleries.galleryList.length">
             <h2>No Galleries Yet</h2>
         </div>
         <div class="form-group">
-        <h2>Add Gallery</h2>
-        <label for="addGallery_Name">Name:</label>
-        <input id="addGallery_Name" type="text" value.bind="addGallery.name">
-        <label for="addGallery_Description">Description:</label>
-        <input id="addGallery_Description" type="text" value.bind="addGallery.description">
-        <button class="btn-success" id="addNewGallery"click.trigger="saveGallery()">Save Gallery</button>
+            <h2>Add Gallery</h2>
+            <div class="form-group">
+                <label for="galleryObject_Name">Name</label>
+                <input class="form-control" id="galleryObject_Name" type="text" value.bind="galleryObject.name">
+            </div>
+            <div>
+                <label for="galleryObject_Description">Description</label>
+                <input class="form-control" id="galleryObject_Description" type="text" value.bind="galleryObject.description">
+            </div>
+            <button class="btn btn-success" id="addNewGallery"click.trigger="saveGallery()">Save Gallery</button>
         </div>
-        <button class="btn-warning" click.trigger="logout()">Logout</button>
+        <div class="form-group pull-left">
+            <button class="btn btn-warning" click.trigger="logout()">Logout</button>
+        </div>
     </div>
 </template>

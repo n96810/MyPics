@@ -1,0 +1,28 @@
+<template>
+    <div show.bind="pictureObject._id">
+        <h2>Testing</h2>
+        <div>
+            <div class="form-group">
+                <img class="img" src="http://localhost:5000/uploads/${pictureObject.galleryId}/${pictureObject._id}/${pictureObject.imageFile.filename}" aria-placeholder="No Image Selected">
+            </div>
+            <div class="form-group center-block">
+                <div class="form-group">
+                    <label for="pictureObject_Name">Name</label>
+                    <input class="form-control" id="pictureObject_Name" type="text" value.bind="pictureObject.name">
+                </div>
+                <div class="form-group">
+                    <label for="pictureObject_Desc">Description</label>
+                    <input class="form-control" id="pictureObject_Desc" type="text" value.bind="pictureObject.description">
+                </div>
+                <div class="form-group">
+                    <label for="pictureObject_Date">Picture Date</label>
+                    <input class="form-control" id="pictureObject_Date" type="date" value.bind="pictureObject.pictureDate">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" click.trigger="savePicture()">Save Picture</button>
+                </div>
+                <button click.trigger="openGallery(galleryObject)">Back to Gallery: ${galleryObject.name}</button>
+            </div>
+        </div>
+    </div>
+</template>

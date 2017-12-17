@@ -13,7 +13,7 @@ export class List {
         this.user = JSON.parse(sessionStorage.getItem("user"));
         this.showGalleryList = true;
 
-        this.addGallery = {
+        this.galleryObject = {
             "userId": this.user._id,
             "name": "",
             "description": "",
@@ -33,8 +33,7 @@ export class List {
     async openGallery(gallery) {
         this.galleryObject = gallery;
         await this.pictures.getGalleryPictures(this.galleryObject._id);
-        console.log(this.pictures.pictureList);
-        this.addPicture = {
+        this.pictureObject = {
             "name": "",
             "description": "",
             "galleryId": this.galleryObject._id
@@ -51,7 +50,6 @@ export class List {
             let response = await this.galleries.save(this.addGallery);
             if (response.error) {
                 alert("There was an issue saving this gallery");
-                console.log(response.error);
             } else {
                 var galleryId = response._id;
 
@@ -64,18 +62,14 @@ export class List {
     }
 
     async savePicture() {
-        if (this.addPicture) {
-            let response = await this.pictures.save(this.addPicture);
+        if (this.pictureObject) {
+            let response = await this.pictures.save(this.pictureObject);
             if (response.error) {
                 alert("There was an issue saving this picture");
-                console.log(response.error);
             } else {
                 var pictureId = response._id;
-                console.log("response: " + response);
-                console.log("id: " + pictureId);
                 if (this.imageFile && this.imageFile.length) {
                     await this.pictures.uploadImageFile(this.imageFile, this.galleryObject._id, pictureId);
-                    console.log("done save picture");
                     this.imageFile = [];
                 }
             }
@@ -83,11 +77,8 @@ export class List {
     }
 
     async openPicture(picture) {
-        console.log("picture");
-        console.log(picture);
-        console.log(picture.imageFile);
         this.pictureObject = picture;
-        console.log("Picture source: " + "uploads/" + this.pictureObject.galleryId + "/" + this.pictureObject._id + "/" + this.pictureObject.imageFile.filename)
+        console.log(this.pictureObject);
     }
 
     async deletePicture(picture) {
