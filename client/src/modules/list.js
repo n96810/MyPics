@@ -31,10 +31,13 @@ export class List {
     }
 
     async openGallery(gallery) {
-        await this.pictures.getGalleryPictures(gallery._id);
+        this.galleryObject = gallery;
+        await this.pictures.getGalleryPictures(this.galleryObject._id);
+        console.log(this.pictures.pictureList);
         this.addPicture = {
             "name": "",
-            "description": ""
+            "description": "",
+            "galleryId": this.galleryObject._id
         }
         this.showGalleryList = false;
     }
@@ -67,9 +70,32 @@ export class List {
                 alert("There was an issue saving this picture");
                 console.log(response.error);
             } else {
-                var galleryId = response._id;
-
+                var pictureId = response._id;
+                console.log("response: " + response);
+                console.log("id: " + pictureId);
+                if (this.imageFile && this.imageFile.length) {
+                    await this.pictures.uploadImageFile(this.imageFile, this.galleryObject._id, pictureId);
+                    console.log("done save picture");
+                    this.imageFile = [];
+                }
             }
         }
+    }
+
+    async openPicture(picture) {
+        console.log("picture");
+        console.log(picture);
+        console.log(picture.imageFile);
+        this.pictureObject = picture;
+        console.log("Picture source: " + "uploads/" + this.pictureObject.galleryId + "/" + this.pictureObject._id + "/" + this.pictureObject.imageFile.filename)
+    }
+
+    async deletePicture(picture) {
+        this.pictures.delete(picture._id);
+    }
+
+    async uploadPicture() {
+        this.imageFile = new Array();
+        this.imageFile.push(this.files[0]);
     }
 }

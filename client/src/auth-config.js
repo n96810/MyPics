@@ -1,5 +1,5 @@
 var authConfig = {
-    "baseUrl": "http://localhost:5000/api",
+    "baseUrl": "http://localhost:80/api",
     "loginUrl": "/users/login",
     "tokenName": "token",
     "authHeader": "Authorization",

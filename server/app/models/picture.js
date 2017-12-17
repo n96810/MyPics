@@ -7,9 +7,9 @@ var PictureSchema = new Schema({
     "description": { "type": String, "default": "Description" },
     "pictureDate": { "type": Date, "default": new Date() },
     "imageFile": {
-        "displayName": { "type": String, "default": "New picture"},
-        "filename": { "type": String, "required": true },
-        "dateCreated": { "type": Date, "default":new Date() }
+        "originalName": { "type": String},
+        "filename": { "type": String },
+        "dateUploaded": { "type": Date, "default":new Date() }
     }
 });
 

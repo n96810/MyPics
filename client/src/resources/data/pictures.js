@@ -8,14 +8,14 @@ export class Pictures {
         this.data = data;
         this.galleries = galleries;
         this.PICTURE_SERVICE = "pictures"
-        this.pictures = [];
+        this.pictureList = [];
     }
 
     async getGalleryPictures(id) {
         console.log("route: " + this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
         let response = await this.data.get(this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
         if (!response.error && !response.message) {
-            this.pictures = response;
+            this.pictureList = response;
         }
     }
     
@@ -30,7 +30,7 @@ export class Pictures {
         if (!picture._id) {
             let response = await this.data.post(picture, this.PICTURE_SERVICE)
             if (!response.error) {
-                this.pictures.push(response);
+                this.pictureList.push(response);
             }
             return response;
         } else {
@@ -41,14 +41,26 @@ export class Pictures {
         }
     }
     
-    async deletePicture(id) {
-        let response = await this.data.delete(Gallery.GALLERY_SERVICE + "/" + data.galleryId + "/" + this.PICTURE_SERVICE + "/" + id);
+    async delete(id) {
+        let response = await this.data.delete(this.galleries.GALLERY_SERVICE + "/" + this.data.galleryId + "/" + this.PICTURE_SERVICE + "/" + id);
         if (!response.error) {
-            for (let i = 0; i < this.pictures.length; i++) {
-                if (this.pictures[i]._id == id) {
-                    this.pictures.splice(i, 1);
+            for (let i = 0; i < this.pictureList.length; i++) {
+                if (this.pictureList[i]._id == id) {
+                    this.pictureList.splice(i, 1);
                 }
             }
         }
+    }
+
+    async uploadImageFile(files, galleryId, pictureId) {
+        let formData = new FormData();
+
+        console.log("looking at file");
+        files.forEach((item, index) => {
+            formData.append("file" + index, item);
+        });
+
+        console.log(this.PICTURE_SERVICE + "/" + galleryId + "/" + pictureId + "/files");
+        let response = await this.data.uploadFiles(formData, this.PICTURE_SERVICE + "/" + galleryId + "/" + pictureId + "/files");
     }
 }
