@@ -11,7 +11,7 @@ export class List {
         this.auth = auth;
 
         this.user = JSON.parse(sessionStorage.getItem("user"));
-        this.showGalleryList = true;
+        // this.showGalleryList = true;
 
         this.galleryObject = {
             "userId": this.user._id,
@@ -34,25 +34,23 @@ export class List {
         this.galleryObject = gallery;
         await this.pictures.getGalleryPictures(this.galleryObject._id);
         this.pictureObject = {
-            "name": "",
-            "description": "",
             "galleryId": this.galleryObject._id
         }
-        this.showGalleryList = false;
+        // this.showGalleryList = false;
     }
 
     async exitGallery() {
-        this.showGalleryList = true;
+        // this.showGalleryList = true;
+        this.galleryObject = undefined;
     }
 
     async saveGallery() {
-        if (this.addGallery) {
-            let response = await this.galleries.save(this.addGallery);
+        if (this.galleryObject) {
+            let response = await this.galleries.save(this.galleryObject);
             if (response.error) {
                 alert("There was an issue saving this gallery");
             } else {
-                var galleryId = response._id;
-
+                this.galleryObject = undefined;
             }
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div show.bind="!pictureObject._id">
+    <form class="form" show.bind="!pictureObject._id && galleryObject._id">
             <div show.bind="pictures.pictureList.length">
                 <table class="table table-striped table-bordered">
                     <thead>
@@ -52,5 +52,5 @@
             </div>
         </div>
         <button class="btn btn-warning" click.trigger="exitGallery()">Back to List</button>
-    </div>
+    </form>
 </template>

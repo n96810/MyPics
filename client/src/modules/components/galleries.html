@@ -1,5 +1,5 @@
 <template>
-    <div show.bind="!galleryObject._id">
+    <form class="form" show.bind="!galleryObject._id">
         <div class="form-group" show.bind="galleries.galleryList.length">
             <table class="table table-striped table-bordered">
                 <thead>
@@ -39,5 +39,5 @@
         <div class="form-group pull-left">
             <button class="btn btn-warning" click.trigger="logout()">Logout</button>
         </div>
-    </div>
+    </form>
 </template>
