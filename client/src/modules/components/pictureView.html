@@ -3,7 +3,7 @@
         <h2>Testing</h2>
         <div>
             <div class="form-group">
-                <img class="img" src="http://localhost:5000/uploads/${pictureObject.galleryId}/${pictureObject._id}/${pictureObject.imageFile.filename}" aria-placeholder="No Image Selected">
+                <img class="img" src="http://localhost:5000/uploads/${user._id}/${pictureObject.galleryId}/${pictureObject._id}/${pictureObject.imageFile.filename}" aria-placeholder="No Image Selected">
             </div>
             <div class="form-group center-block">
                 <div class="form-group">
@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <button class="btn btn-primary" click.trigger="savePicture()">Save Picture</button>
                 </div>
-                <button click.trigger="openGallery(galleryObject)">Back to Gallery: ${galleryObject.name}</button>
+                <button class="btn btn-secondary" click.trigger="openGallery(galleryObject)">Back to Gallery: ${galleryObject.name}</button>
             </div>
         </div>
     </form>

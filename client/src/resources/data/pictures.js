@@ -15,6 +15,8 @@ export class Pictures {
         let response = await this.data.get(this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
         if (!response.error && !response.message) {
             this.pictureList = response;
+        } else {
+            this.pictureList = [];
         }
     }
     
@@ -53,7 +55,7 @@ export class Pictures {
         }
     }
 
-    async uploadImageFile(files, galleryId, pictureId) {
+    async uploadImageFile(files, userId, galleryId, pictureId) {
         let formData = new FormData();
 
         console.log("looking at file");
@@ -61,7 +63,6 @@ export class Pictures {
             formData.append("file" + index, item);
         });
 
-        console.log(this.PICTURE_SERVICE + "/" + galleryId + "/" + pictureId + "/files");
-        let response = await this.data.uploadFiles(formData, this.PICTURE_SERVICE + "/" + galleryId + "/" + pictureId + "/files");
+        let response = await this.data.uploadFiles(formData, this.PICTURE_SERVICE + "/" + userId + "/" + galleryId + "/" + pictureId + "/files");
     }
 }

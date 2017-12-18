@@ -2,7 +2,6 @@ import {AuthorizeStep} from "aurelia-auth";
 
 export class App {
   constructor() {
-    this.message = 'Hello World!';
   }
   configureRouter(config, router) {
     this.router = router;

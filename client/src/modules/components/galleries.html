@@ -6,13 +6,15 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Date Created</th>
                         <th>Options</th>
                     </tr>
                 </thead>
                 <body>
                     <tr repeat.for="gallery of galleries.galleryList">
                         <td>${gallery.name}</td>
-                        <td>${gallery.name}</td>
+                        <td>${gallery.description}</td>
+                        <td>${gallery.dateCreated | dateFormat}</td>
                         <td>
                             <button class="btn btn-info" click.trigger="openGallery(gallery)">Open</button>
                             <button class="btn btn-danger" click.trigger="deleteGallery(gallery)">Delete</button>
@@ -37,7 +39,7 @@
             <button class="btn btn-success" id="addNewGallery"click.trigger="saveGallery()">Save Gallery</button>
         </div>
         <div class="form-group pull-left">
-            <button class="btn btn-warning" click.trigger="logout()">Logout</button>
+            <button class="btn btn-secondary" click.trigger="logout()">Logout</button>
         </div>
     </form>
 </template>

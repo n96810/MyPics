@@ -46,6 +46,7 @@ export class List {
 
     async saveGallery() {
         if (this.galleryObject) {
+            this.galleryObject.userId = this.user._id;
             let response = await this.galleries.save(this.galleryObject);
             if (response.error) {
                 alert("There was an issue saving this gallery");
@@ -67,7 +68,7 @@ export class List {
             } else {
                 var pictureId = response._id;
                 if (this.imageFile && this.imageFile.length) {
-                    await this.pictures.uploadImageFile(this.imageFile, this.galleryObject._id, pictureId);
+                    await this.pictures.uploadImageFile(this.imageFile, this.user._id, this.galleryObject._id, pictureId);
                     this.imageFile = [];
                 }
             }

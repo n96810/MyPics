@@ -12,7 +12,7 @@ Picture = mongoose.model("Picture");
 module.exports = function(app, config) {
     var storage = multer.diskStorage({
         "destination": function(req, file, cb) {
-            var path = config.uploads + "/" + req.params.galleryId + "/" + req.params.pictureId;
+            var path = config.uploads + "/" + req.params.userId + "/" + req.params.galleryId + "/" + req.params.pictureId;
             mkdirp(path, function(err) {
                 if (err) {
                     res.status(500).json(err);
@@ -34,7 +34,6 @@ module.exports = function(app, config) {
     router.get("/galleries/:galleryId/pictures", function(req, res, next) { 
         logger.log("Get all pictures (thumbnails) for a user's gallery");
         var pictures = Picture.find({ "galleryId": req.params.galleryId })
-        .exec()
         .then(result => {
             if (result && result.length) {
                 res.status(200).json(result);
@@ -62,7 +61,7 @@ module.exports = function(app, config) {
         })
     });
     
-    router.post("/pictures/:galleryId/:pictureId/files", upload.any(), function(req, res, next) {
+    router.post("/pictures/:userId/:galleryId/:pictureId/files", upload.any(), function(req, res, next) {
         logger.log("Add image file for picture");
 
         Picture.findById(req.params.pictureId, function(err, picture) {

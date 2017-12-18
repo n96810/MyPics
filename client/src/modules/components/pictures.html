@@ -7,20 +7,22 @@
                             <th>Thumbnail</th>
                             <th>Name</th>
                             <th>Description</th>
+                            <th>Picture Date</th>
                             <th>Options</th>
                         </tr>
                     </thead>
                     <body>
                         <tr repeat.for="picture of pictures.pictureList">
                             <td>
-                                <img class="img-thumbnail" src="http://localhost:5000/uploads/${picture.galleryId}/${picture._id}/${picture.imageFile.filename}"
+                                <img class="img-thumbnail" src="http://localhost:5000/uploads/${user._id}/${picture.galleryId}/${picture._id}/${picture.imageFile.filename}"
                                 height="40px" width="40px">
                             </td>
                             <td>${picture.name}</td>
                             <td>${picture.description}</td>
+                            <td>${picture.pictureDate | dateFormat}</td>
                             <td>
-                                <button class="btn" click.trigger="openPicture(picture)">Open</button>
-                                <button class="btn" click.trigger="deletePicture(picture)">Delete</button>
+                                <button class="btn btn-info" click.trigger="openPicture(picture)">Open</button>
+                                <button class="btn btn-danger" click.trigger="deletePicture(picture)">Delete</button>
                             </td>
                         </tr>
                     </body>
@@ -51,6 +53,6 @@
                 <button class="btn btn-success" id="addNewPicture" click.trigger="savePicture()">Add picture</button>
             </div>
         </div>
-        <button class="btn btn-warning" click.trigger="exitGallery()">Back to List</button>
+        <button class="btn btn-secondary" click.trigger="exitGallery()">Back to List</button>
     </form>
 </template>
