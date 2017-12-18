@@ -14,7 +14,7 @@
                     <body>
                         <tr repeat.for="picture of pictures.pictureList">
                             <td>
-                                <img class="img-thumbnail" src="http://localhost:5000/uploads/${user._id}/${picture.galleryId}/${picture._id}/${picture.imageFile.filename}"
+                                <img class="img-thumbnail" src="uploads/${user._id}/${picture.galleryId}/${picture._id}/${picture.imageFile.filename}"
                                 height="40px" width="40px">
                             </td>
                             <td>${picture.name}</td>
@@ -43,7 +43,7 @@
             </div>
             <div class="form-group">
                 <label for="addPicture_Date">Picture Date</label>
-                <input class="form-control" id="addPicture_Date" type="date" value.bind="pictureObject.pictureDate">
+                <flat-picker id="addPicture_Date" value.bind="pictureObject.pictureDate"></flat-picker>
             </div>
             <div class="form-group">
                 <label for="addPicture_ImgFile">Add Image File</label>

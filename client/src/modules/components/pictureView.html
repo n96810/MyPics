@@ -3,7 +3,7 @@
         <h2>Testing</h2>
         <div>
             <div class="form-group">
-                <img class="img" src="http://localhost:5000/uploads/${user._id}/${pictureObject.galleryId}/${pictureObject._id}/${pictureObject.imageFile.filename}" aria-placeholder="No Image Selected">
+                <img class="img" src="uploads/${user._id}/${pictureObject.galleryId}/${pictureObject._id}/${pictureObject.imageFile.filename}" aria-placeholder="No Image Selected">
             </div>
             <div class="form-group center-block">
                 <div class="form-group">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="form-group">
                     <label for="pictureObject_Date">Picture Date</label>
-                    <input class="form-control" id="pictureObject_Date" type="date" value.bind="pictureObject.pictureDate">
+                    <flat-picker id="pictureObject_Date" type="date" value.bind="pictureObject.pictureDate"></flat-picker>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" click.trigger="savePicture()">Save Picture</button>

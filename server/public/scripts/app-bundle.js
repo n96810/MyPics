@@ -15,8 +15,6 @@ define('app',["exports", "aurelia-auth"], function (exports, _aureliaAuth) {
   var App = exports.App = function () {
     function App() {
       _classCallCheck(this, App);
-
-      this.message = 'Hello World!';
     }
 
     App.prototype.configureRouter = function configureRouter(config, router) {
@@ -106,15 +104,6 @@ define('main',["exports", "./environment", "./auth-config", "./regenerator-runti
       return aurelia.setRoot();
     });
   }
-});
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
 });
 define('modules/home',["exports", "aurelia-framework", "aurelia-router", "../resources/data/users", "aurelia-auth"], function (exports, _aureliaFramework, _aureliaRouter, _users, _aureliaAuth) {
     "use strict";
@@ -291,9 +280,9 @@ define('modules/list',["exports", "aurelia-framework", "../resources/data/galler
             this.auth = auth;
 
             this.user = JSON.parse(sessionStorage.getItem("user"));
-            this.showGalleryList = true;
 
-            this.addGallery = {
+
+            this.galleryObject = {
                 "userId": this.user._id,
                 "name": "",
                 "description": "",
@@ -341,15 +330,11 @@ define('modules/list',["exports", "aurelia-framework", "../resources/data/galler
                                 return this.pictures.getGalleryPictures(this.galleryObject._id);
 
                             case 3:
-                                console.log(this.pictures.pictureList);
-                                this.addPicture = {
-                                    "name": "",
-                                    "description": "",
+                                this.pictureObject = {
                                     "galleryId": this.galleryObject._id
                                 };
-                                this.showGalleryList = false;
 
-                            case 6:
+                            case 4:
                             case "end":
                                 return _context2.stop();
                         }
@@ -370,7 +355,7 @@ define('modules/list',["exports", "aurelia-framework", "../resources/data/galler
                     while (1) {
                         switch (_context3.prev = _context3.next) {
                             case 0:
-                                this.showGalleryList = true;
+                                this.galleryObject = undefined;
 
                             case 1:
                             case "end":
@@ -389,30 +374,30 @@ define('modules/list',["exports", "aurelia-framework", "../resources/data/galler
 
         List.prototype.saveGallery = function () {
             var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
-                var response, galleryId;
+                var response;
                 return regeneratorRuntime.wrap(function _callee4$(_context4) {
                     while (1) {
                         switch (_context4.prev = _context4.next) {
                             case 0:
-                                if (!this.addGallery) {
-                                    _context4.next = 5;
+                                if (!this.galleryObject) {
+                                    _context4.next = 6;
                                     break;
                                 }
 
-                                _context4.next = 3;
-                                return this.galleries.save(this.addGallery);
+                                this.galleryObject.userId = this.user._id;
+                                _context4.next = 4;
+                                return this.galleries.save(this.galleryObject);
 
-                            case 3:
+                            case 4:
                                 response = _context4.sent;
 
                                 if (response.error) {
                                     alert("There was an issue saving this gallery");
-                                    console.log(response.error);
                                 } else {
-                                    galleryId = response._id;
+                                    this.galleryObject = undefined;
                                 }
 
-                            case 5:
+                            case 6:
                             case "end":
                                 return _context4.stop();
                         }
@@ -438,46 +423,41 @@ define('modules/list',["exports", "aurelia-framework", "../resources/data/galler
                     while (1) {
                         switch (_context5.prev = _context5.next) {
                             case 0:
-                                if (!this.addPicture) {
-                                    _context5.next = 17;
+                                if (!this.pictureObject) {
+                                    _context5.next = 13;
                                     break;
                                 }
 
                                 _context5.next = 3;
-                                return this.pictures.save(this.addPicture);
+                                return this.pictures.save(this.pictureObject);
 
                             case 3:
                                 response = _context5.sent;
 
                                 if (!response.error) {
-                                    _context5.next = 9;
+                                    _context5.next = 8;
                                     break;
                                 }
 
                                 alert("There was an issue saving this picture");
-                                console.log(response.error);
-                                _context5.next = 17;
+                                _context5.next = 13;
                                 break;
 
-                            case 9:
+                            case 8:
                                 pictureId = response._id;
 
-                                console.log("response: " + response);
-                                console.log("id: " + pictureId);
-
                                 if (!(this.imageFile && this.imageFile.length)) {
-                                    _context5.next = 17;
+                                    _context5.next = 13;
                                     break;
                                 }
 
-                                _context5.next = 15;
-                                return this.pictures.uploadImageFile(this.imageFile, this.galleryObject._id, pictureId);
+                                _context5.next = 12;
+                                return this.pictures.uploadImageFile(this.imageFile, this.user._id, this.galleryObject._id, pictureId);
 
-                            case 15:
-                                console.log("done save picture");
+                            case 12:
                                 this.imageFile = [];
 
-                            case 17:
+                            case 13:
                             case "end":
                                 return _context5.stop();
                         }
@@ -498,13 +478,10 @@ define('modules/list',["exports", "aurelia-framework", "../resources/data/galler
                     while (1) {
                         switch (_context6.prev = _context6.next) {
                             case 0:
-                                console.log("picture");
-                                console.log(picture);
-                                console.log(picture.imageFile);
                                 this.pictureObject = picture;
-                                console.log("Picture source: " + "uploads/" + this.pictureObject.galleryId + "/" + this.pictureObject._id + "/" + this.pictureObject.imageFile.filename);
+                                console.log(this.pictureObject);
 
-                            case 5:
+                            case 2:
                             case "end":
                                 return _context6.stop();
                         }
@@ -568,6 +545,17 @@ define('modules/list',["exports", "aurelia-framework", "../resources/data/galler
 
         return List;
     }()) || _class);
+});
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {
+    config.globalResources(["./value-converters/date-format", "./elements/flatpickr"]);
+  }
 });
 define('resources/data/data-services',["exports", "aurelia-framework", "aurelia-fetch-client"], function (exports, _aureliaFramework, _aureliaFetchClient) {
     "use strict";
@@ -924,18 +912,19 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                console.log("route: " + this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
-                                _context.next = 3;
+                                _context.next = 2;
                                 return this.data.get(this.galleries.GALLERY_SERVICE + "/" + id + "/" + this.PICTURE_SERVICE);
 
-                            case 3:
+                            case 2:
                                 response = _context.sent;
 
                                 if (!response.error && !response.message) {
                                     this.pictureList = response;
+                                } else {
+                                    this.pictureList = [];
                                 }
 
-                            case 5:
+                            case 4:
                             case "end":
                                 return _context.stop();
                         }
@@ -951,23 +940,26 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
         }();
 
         Pictures.prototype.getPicture = function () {
-            var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(id) {
+            var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(galleryId, pictureId) {
                 var response;
                 return regeneratorRuntime.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
                                 _context2.next = 2;
-                                return this.data.get(_galleries.Galleries.GALLERY_SERVICE + "/" + data.galleryId + "/" + this.PICTURE_SERVICE + "/" + id);
+                                return this.data.get(this.galleries.GALLERY_SERVICE + "/" + galleryId + "/" + this.PICTURE_SERVICE + "/" + pictureId);
 
                             case 2:
                                 response = _context2.sent;
 
-                                if (!response.error && !response.message) {
-                                    this.currentPicture = response;
+                                if (!(!response.error && !response.message)) {
+                                    _context2.next = 5;
+                                    break;
                                 }
 
-                            case 4:
+                                return _context2.abrupt("return", response);
+
+                            case 5:
                             case "end":
                                 return _context2.stop();
                         }
@@ -975,7 +967,7 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
                 }, _callee2, this);
             }));
 
-            function getPicture(_x2) {
+            function getPicture(_x2, _x3) {
                 return _ref2.apply(this, arguments);
             }
 
@@ -990,15 +982,18 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
                     while (1) {
                         switch (_context3.prev = _context3.next) {
                             case 0:
+                                console.log(picture);
+                                console.log(picture._id);
+
                                 if (picture._id) {
-                                    _context3.next = 8;
+                                    _context3.next = 10;
                                     break;
                                 }
 
-                                _context3.next = 3;
+                                _context3.next = 5;
                                 return this.data.post(picture, this.PICTURE_SERVICE);
 
-                            case 3:
+                            case 5:
                                 response = _context3.sent;
 
                                 if (!response.error) {
@@ -1006,17 +1001,17 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
                                 }
                                 return _context3.abrupt("return", response);
 
-                            case 8:
-                                _context3.next = 10;
-                                return this.data.put(picture, this.PICTURE_SERVICE + "/" + picture);
-
                             case 10:
+                                _context3.next = 12;
+                                return this.data.put(picture, this.galleries.GALLERY_SERVICE + "/" + picture.galleryId + "/" + this.PICTURE_SERVICE + "/" + picture._id);
+
+                            case 12:
                                 _response = _context3.sent;
 
                                 if (!_response.error) {}
                                 return _context3.abrupt("return", _response);
 
-                            case 13:
+                            case 15:
                             case "end":
                                 return _context3.stop();
                         }
@@ -1024,7 +1019,7 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
                 }, _callee3, this);
             }));
 
-            function save(_x3) {
+            function save(_x4) {
                 return _ref3.apply(this, arguments);
             }
 
@@ -1060,7 +1055,7 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
                 }, _callee4, this);
             }));
 
-            function _delete(_x4) {
+            function _delete(_x5) {
                 return _ref4.apply(this, arguments);
             }
 
@@ -1068,7 +1063,7 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
         }();
 
         Pictures.prototype.uploadImageFile = function () {
-            var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(files, galleryId, pictureId) {
+            var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(files, userId, galleryId, pictureId) {
                 var formData, response;
                 return regeneratorRuntime.wrap(function _callee5$(_context5) {
                     while (1) {
@@ -1082,14 +1077,13 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
                                     formData.append("file" + index, item);
                                 });
 
-                                console.log(this.PICTURE_SERVICE + "/" + galleryId + "/" + pictureId + "/files");
-                                _context5.next = 6;
-                                return this.data.uploadFiles(formData, this.PICTURE_SERVICE + "/" + galleryId + "/" + pictureId + "/files");
+                                _context5.next = 5;
+                                return this.data.uploadFiles(formData, this.PICTURE_SERVICE + "/" + userId + "/" + galleryId + "/" + pictureId + "/files");
 
-                            case 6:
+                            case 5:
                                 response = _context5.sent;
 
-                            case 7:
+                            case 6:
                             case "end":
                                 return _context5.stop();
                         }
@@ -1097,7 +1091,7 @@ define('resources/data/pictures',["exports", "aurelia-framework", "./data-servic
                 }, _callee5, this);
             }));
 
-            function uploadImageFile(_x5, _x6, _x7) {
+            function uploadImageFile(_x6, _x7, _x8, _x9) {
                 return _ref5.apply(this, arguments);
             }
 
@@ -1197,12 +1191,167 @@ define('resources/data/users',["exports", "aurelia-framework", "./data-services"
         return Users;
     }()) || _class);
 });
+define('resources/elements/flatpickr',['exports', 'aurelia-framework', 'flatpickr'], function (exports, _aureliaFramework, _flatpickr) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.FlatPickerCustomElement = undefined;
+
+    var _flatpickr2 = _interopRequireDefault(_flatpickr);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _initDefineProp(target, property, descriptor, context) {
+        if (!descriptor) return;
+        Object.defineProperty(target, property, {
+            enumerable: descriptor.enumerable,
+            configurable: descriptor.configurable,
+            writable: descriptor.writable,
+            value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+        });
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+        var desc = {};
+        Object['ke' + 'ys'](descriptor).forEach(function (key) {
+            desc[key] = descriptor[key];
+        });
+        desc.enumerable = !!desc.enumerable;
+        desc.configurable = !!desc.configurable;
+
+        if ('value' in desc || desc.initializer) {
+            desc.writable = true;
+        }
+
+        desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+            return decorator(target, property, desc) || desc;
+        }, desc);
+
+        if (context && desc.initializer !== void 0) {
+            desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+            desc.initializer = undefined;
+        }
+
+        if (desc.initializer === void 0) {
+            Object['define' + 'Property'](target, property, desc);
+            desc = null;
+        }
+
+        return desc;
+    }
+
+    function _initializerWarningHelper(descriptor, context) {
+        throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
+    }
+
+    var _dec, _dec2, _class, _desc, _value, _class2, _descriptor;
+
+    var FlatPickerCustomElement = exports.FlatPickerCustomElement = (_dec = (0, _aureliaFramework.inject)(Element), _dec2 = (0, _aureliaFramework.bindable)({ "defaultBindingMode": _aureliaFramework.bindingMode.twoWay }), _dec(_class = (_class2 = function () {
+        function FlatPickerCustomElement(element) {
+            _classCallCheck(this, FlatPickerCustomElement);
+
+            _initDefineProp(this, 'value', _descriptor, this);
+
+            this.element = element;
+        }
+
+        FlatPickerCustomElement.prototype.bind = function bind() {
+            var defaultConfig = {
+                "altInput": true,
+                "altFormat": "F j, Y",
+                "wrap": true
+            };
+
+            this._config = Object.assign({}, defaultConfig);
+            this._config.onChange = this._config.onMonthChange = this._config.onYearChange = this.onChange.bind(this);
+        };
+
+        FlatPickerCustomElement.prototype.attached = function attached() {
+            this.flatpickr = new _flatpickr2.default(this.element.querySelector(".aurelia-flatpickr"), this._config);
+        };
+
+        FlatPickerCustomElement.prototype.onChange = function onChange(selectedDates, dateStr, instance) {
+            this.value = selectedDates[0];
+        };
+
+        FlatPickerCustomElement.prototype.valueChanged = function valueChanged() {
+            if (!this.flatpickr) {
+                return;
+            }
+
+            if (this.value === this.flatpickr.selectedDates[0]) {
+                return;
+            }
+
+            var newDate = this.value ? this.value : undefined;
+
+            this.flatpickr.setDate(newDate);
+        };
+
+        return FlatPickerCustomElement;
+    }(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'value', [_dec2], {
+        enumerable: true,
+        initializer: null
+    })), _class2)) || _class);
+});
+define('resources/value-converters/date-format',["exports", "moment"], function (exports, _moment) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.DateFormatValueConverter = undefined;
+
+    var _moment2 = _interopRequireDefault(_moment);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var DateFormatValueConverter = exports.DateFormatValueConverter = function () {
+        function DateFormatValueConverter() {
+            _classCallCheck(this, DateFormatValueConverter);
+        }
+
+        DateFormatValueConverter.prototype.toView = function toView(value) {
+            if (value === undefined || value === null) {
+                return;
+            }
+
+            return (0, _moment2.default)(value).format("MMM do YYYY");
+        };
+
+        return DateFormatValueConverter;
+    }();
+});
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"resources/css/styles.css\"></require><router-view></router-view></template>"; });
-define('text!resources/css/styles.css', ['module'], function(module) { module.exports = ".rightMargin {\r\n    margin-right: 10px;\r\n}"; });
-define('text!modules/home.html', ['module'], function(module) { module.exports = "<template><h1>${message}</h1><compose view=\"./components/login.html\" show.bind=\"showLogin\"></compose><compose view=\"./components/register.html\" show.bind=\"!showLogin\"></compose></template>"; });
-define('text!modules/list.html', ['module'], function(module) { module.exports = "<template><h1>${message}</h1><compose show.bind=\"showGalleryList\" view=\"./components/galleries.html\"></compose><compose show.bind=\"!showGalleryList\" view=\"./components/pictures.html\"></compose></template>"; });
-define('text!modules/components/galleries.html', ['module'], function(module) { module.exports = "<template><div class=\"card\"><div show.bind=\"galleries.galleryList.length\"><table class=\"table\"><thead><tr><th>Name</th><th>Description</th><th>Options</th></tr></thead><body><tr repeat.for=\"gallery of galleries.galleryList\"><td>${gallery.name}</td><td>${gallery.name}</td><td><button class=\"btn-info\" click.trigger=\"openGallery(gallery)\">Open</button> <button class=\"btn-danger\" click.trigger=\"deleteGallery(gallery)\">Delete</button></td></tr></body></table></div><div show.bind=\"!galleries.galleryList.length\"><h2>No Galleries Yet</h2></div><div class=\"form-group\"><h2>Add Gallery</h2><label for=\"addGallery_Name\">Name:</label><input id=\"addGallery_Name\" type=\"text\" value.bind=\"addGallery.name\"><label for=\"addGallery_Description\">Description:</label><input id=\"addGallery_Description\" type=\"text\" value.bind=\"addGallery.description\"> <button class=\"btn-success\" id=\"addNewGallery\" click.trigger=\"saveGallery()\">Save Gallery</button></div><button class=\"btn-warning\" click.trigger=\"logout()\">Logout</button></div></template>"; });
-define('text!modules/components/login.html', ['module'], function(module) { module.exports = "<template><label for=\"email\">Email:</label><input class=\"form-control\" value.bind=\"email\" type=\"email\" id=\"email\" placeholder=\"user@domain.com\" autofocus><label for=\"password\">Password:</label><input class=\"form-control\" value.bind=\"password\" type=\"password\" id=\"password\"> <button class=\"btn btn-info btn-large pull-right\" click.trigger=\"login()\">Login</button> <button class=\"btn btn-link pull-right\" click.trigger=\"showRegister()\">Register</button></template>"; });
-define('text!modules/components/pictures.html', ['module'], function(module) { module.exports = "<template><div class=\"card\"><div show.bind=\"pictureObject\"><div class=\"form-group\"><img src=\"uploads/${pictureObject.galleryId}/${pictureObject._id}/${pictureObject.imageFile.filename}\" aria-placeholder=\"No Image Selected\"></div><div class=\"form-group\"><label for=\"pictureObject_Name\">Name:</label><h2 id=\"pictureObject_Name\">${pictureObject.name}</h2><label for=\"pictureObject_Desc\">Description:</label><h2 id=\"pictureObject_Desc\">${pictureObject.description}</h2><label for=\"pictureObject_Date\">Picture Date:</label><h2 id=\"pictureObject_Date\">${pictureObject.pictureDate.ToString(\"d\")}</h2></div></div><div show.bind=\"pictures.pictureList.length\"><table class=\"table\"><thead><tr><th>Thumbnail</th><th>Name</th><th>Description</th><th>Options</th></tr></thead><body><tr repeat.for=\"picture of pictures.pictureList\"><td><img src=\"uploads/${picture.galleryId}/${picture._id}/${picture.imageFile.filename}\" height=\"40px\" width=\"40px\"></td><td>${picture.name}</td><td>${picture.description}</td><td><button click.trigger=\"openPicture(picture)\">Open</button> <button click.trigger=\"deletePicture(picture)\">Delete</button></td></tr></body></table></div><div show.bind=\"!pictures.pictureList.length\"><h2>No Pictures</h2></div><div class=\"form-group\"><h2>Add Picture</h2><div class=\"form-group\"><label for=\"addPicture_Name\">Name:</label><input id=\"addPicture_Name\" type=\"text\" value.bind=\"addPicture.name\"></div><div class=\"form-group\"><label for=\"addPicture_Description\">Description:</label><input id=\"addPicture_Description\" type=\"text\" value.bind=\"addPicture.description\"></div><div class=\"form-group\"><label for=\"addPicture_Date\">Description:</label><input id=\"addPicture_Date\" type=\"date\" value.bind=\"addPicture.pictureDate\"></div><div class=\"form-group\"><label for=\"addPicture_ImgFile\">Add Image file:</label><input id=\"addPicture_ImgFile\" type=\"file\" change.delegate=\"uploadPicture()\" files.bind=\"files\"></div><div class=\"form-group\"><button id=\"addNewPicture\" click.trigger=\"savePicture()\">Add picture to ${galleryObject.name}</button></div></div></div><button click.trigger=\"exitGallery()\">Back to List</button></template>"; });
+define('text!resources/css/styles.css', ['module'], function(module) { module.exports = ".rightMargin {\r\n    margin-right: 10px;\r\n}\r\n\r\nform {\r\n    padding: 10px;\r\n}"; });
+define('text!modules/home.html', ['module'], function(module) { module.exports = "<template><compose view=\"./components/login.html\" show.bind=\"showLogin\"></compose><compose view=\"./components/register.html\" show.bind=\"!showLogin\"></compose></template>"; });
+define('text!modules/list.html', ['module'], function(module) { module.exports = "<template><compose view=\"./components/galleries.html\"></compose><compose view=\"./components/pictures.html\"></compose><compose view=\"./components/pictureView.html\"></compose></template>"; });
+define('text!modules/components/galleries.html', ['module'], function(module) { module.exports = "<template><form class=\"form\" show.bind=\"!galleryObject._id\"><div class=\"form-group\" show.bind=\"galleries.galleryList.length\"><table class=\"table table-striped table-bordered\"><thead><tr><th>Name</th><th>Description</th><th>Date Created</th><th>Options</th></tr></thead><body><tr repeat.for=\"gallery of galleries.galleryList\"><td>${gallery.name}</td><td>${gallery.description}</td><td>${gallery.dateCreated | dateFormat}</td><td><button class=\"btn btn-info\" click.trigger=\"openGallery(gallery)\">Open</button> <button class=\"btn btn-danger\" click.trigger=\"deleteGallery(gallery)\">Delete</button></td></tr></body></table></div><div class=\"form-group\" show.bind=\"!galleries.galleryList.length\"><h2>No Galleries Yet</h2></div><div class=\"form-group\"><h2>Add Gallery</h2><div class=\"form-group\"><label for=\"galleryObject_Name\">Name</label><input class=\"form-control\" id=\"galleryObject_Name\" type=\"text\" value.bind=\"galleryObject.name\"></div><div><label for=\"galleryObject_Description\">Description</label><input class=\"form-control\" id=\"galleryObject_Description\" type=\"text\" value.bind=\"galleryObject.description\"></div><button class=\"btn btn-success\" id=\"addNewGallery\" click.trigger=\"saveGallery()\">Save Gallery</button></div><div class=\"form-group pull-left\"><button class=\"btn btn-secondary\" click.trigger=\"logout()\">Logout</button></div></form></template>"; });
+define('text!modules/components/login.html', ['module'], function(module) { module.exports = "<template><div class=\"form\"><div class=\"form-group\"><label for=\"email\">Email</label><input class=\"form-control\" value.bind=\"email\" type=\"email\" id=\"email\" placeholder=\"user@domain.com\" autofocus></div><div class=\"form-group\"><label for=\"password\">Password</label><input class=\"form-control\" value.bind=\"password\" type=\"password\" id=\"password\"></div><button class=\"btn btn-info\" click.trigger=\"login()\">Login</button></div><button class=\"btn btn-link\" click.trigger=\"showRegister()\">Register</button></template>"; });
+define('text!modules/components/pictures.html', ['module'], function(module) { module.exports = "<template><form class=\"form\" show.bind=\"!pictureObject._id && galleryObject._id\"><div show.bind=\"pictures.pictureList.length\"><table class=\"table table-striped table-bordered\"><thead><tr><th>Thumbnail</th><th>Name</th><th>Description</th><th>Picture Date</th><th>Options</th></tr></thead><body><tr repeat.for=\"picture of pictures.pictureList\"><td><img class=\"img-thumbnail\" src=\"uploads/${user._id}/${picture.galleryId}/${picture._id}/${picture.imageFile.filename}\" height=\"40px\" width=\"40px\"></td><td>${picture.name}</td><td>${picture.description}</td><td>${picture.pictureDate | dateFormat}</td><td><button class=\"btn btn-info\" click.trigger=\"openPicture(picture)\">Open</button> <button class=\"btn btn-danger\" click.trigger=\"deletePicture(picture)\">Delete</button></td></tr></body></table></div><div show.bind=\"!pictures.pictureList.length\"><h2>No Pictures</h2></div><div class=\"form-group\"><h2>Add Picture</h2><div class=\"form-group\"><label for=\"addPicture_Name\">Name</label><input class=\"form-control\" id=\"addPicture_Name\" type=\"text\" value.bind=\"pictureObject.name\"></div><div class=\"form-group\"><label for=\"addPicture_Description\">Description</label><input class=\"form-control\" id=\"addPicture_Description\" type=\"text\" value.bind=\"pictureObject.description\"></div><div class=\"form-group\"><label for=\"addPicture_Date\">Picture Date</label><flat-picker id=\"addPicture_Date\" value.bind=\"pictureObject.pictureDate\"></flat-picker></div><div class=\"form-group\"><label for=\"addPicture_ImgFile\">Add Image File</label><input id=\"addPicture_ImgFile\" type=\"file\" change.delegate=\"uploadPicture()\" files.bind=\"files\"></div><div class=\"form-group\"><button class=\"btn btn-success\" id=\"addNewPicture\" click.trigger=\"savePicture()\">Add picture</button></div></div><button class=\"btn btn-secondary\" click.trigger=\"exitGallery()\">Back to List</button></form></template>"; });
+define('text!modules/components/pictureView.html', ['module'], function(module) { module.exports = "<template><form class=\"form\" show.bind=\"pictureObject._id\"><h2>Testing</h2><div><div class=\"form-group\"><img class=\"img\" src=\"uploads/${user._id}/${pictureObject.galleryId}/${pictureObject._id}/${pictureObject.imageFile.filename}\" aria-placeholder=\"No Image Selected\"></div><div class=\"form-group center-block\"><div class=\"form-group\"><label for=\"pictureObject_Name\">Name</label><input class=\"form-control\" id=\"pictureObject_Name\" type=\"text\" value.bind=\"pictureObject.name\"></div><div class=\"form-group\"><label for=\"pictureObject_Desc\">Description</label><input class=\"form-control\" id=\"pictureObject_Desc\" type=\"text\" value.bind=\"pictureObject.description\"></div><div class=\"form-group\"><label for=\"pictureObject_Date\">Picture Date</label><flat-picker id=\"pictureObject_Date\" type=\"date\" value.bind=\"pictureObject.pictureDate\"></flat-picker></div><div class=\"form-group\"><button class=\"btn btn-primary\" click.trigger=\"savePicture()\">Save Picture</button></div><button class=\"btn btn-secondary\" click.trigger=\"openGallery(galleryObject)\">Back to Gallery: ${galleryObject.name}</button></div></div></form></template>"; });
 define('text!modules/components/register.html', ['module'], function(module) { module.exports = "<template><label for=\"firstName\">First Name:</label><input value.bind=\"user.firstName\" type=\"text\" id=\"firstName\" autofocus><label for=\"lastName\">Last Name:</label><input value.bind=\"user.lastName\" type=\"text\" id=\"lastName\" autofocus><label for=\"email\">Email:</label><input value.bind=\"user.email\" type=\"email\" id=\"email\" placeholder=\"user@domain.com\"><label for=\"password\">Password:</label><input value.bind=\"user.password\" type=\"password\" id=\"password\"> <button click.trigger=\"saveUser()\">Register this User</button></template>"; });
+define('text!resources/elements/flatpickr.html', ['module'], function(module) { module.exports = "<template><require from=\"flatpickr/flatpickr.css\"></require><div class=\"input-group aurelia-flatpickr\"><input type=\"text\" class=\"aurelia-flatpickr form-control flatPicker\" data-input></div></template>"; });
 //# sourceMappingURL=app-bundle.js.map
